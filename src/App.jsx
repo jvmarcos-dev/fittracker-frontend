@@ -35,7 +35,6 @@ function App() {
         </header>
 
         <h2>Rutinas de {`${user.name}`}</h2>
-        
       </main>
       }
       

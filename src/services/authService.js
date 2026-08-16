@@ -1,3 +1,7 @@
+import {
+    apiFetch
+} from "./apiClient"
+
 const API_URL = 'http://localhost:8000/api'
 
 export const authUser = async (userData, action) => {
@@ -24,3 +28,5 @@ export const authUser = async (userData, action) => {
         })
     }
 }
+
+export const userData = () => apiFetch('/user');

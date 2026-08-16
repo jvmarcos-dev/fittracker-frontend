@@ -1,7 +1,9 @@
 import {
     createContext,
+    useEffect,
     useState
 } from "react";
+import { userData } from "../services/authService";
 
 //1. Crear el contexto
 //este es el contexto que tenemos que consumir
@@ -15,6 +17,8 @@ export function AuthProvider({children}){
     //almacena el access_token. 
     // Se inicializa con localstorage para que la sesión no se pierda si el usuario pulsa F5 o recarga la página
     const [token, setToken] = useState(() => localStorage.getItem('token') || null);
+
+    const [loading, setLoading] = useState(true);
     //indica si hay una sesión activa
     const isAuthenticated = Boolean(token)
     function login(newToken, newUser){
@@ -34,7 +38,27 @@ export function AuthProvider({children}){
         setUser(null)
     }
 
+    useEffect(() => {
+            if(!token){
+                setLoading(false)
+                return;
+            }
+
+            userData()
+                .then((user) => {
+                    setUser(user)
+                })
+                .catch((error) => {
+                    console.log("Token invalido o expirado", error);
+                    //en caso de producirse algun error con el token, cierro sesion
+                    logout()
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
+    }, [token])
+
     return(
-        <AuthContext.Provider value={{user, token, isAuthenticated, login, logout}}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{user, token, isAuthenticated, login, logout, loading}}>{!loading && children}</AuthContext.Provider>
     )
 }
