@@ -1,0 +1,12 @@
+{
+  "message": "Usuario registrado con éxito",
+  "user": {
+    "name": "a",
+    "email": "ddasdas@c.es",
+    "updated_at": "2026-08-14T16:43:44.000000Z",
+    "created_at": "2026-08-14T16:43:44.000000Z",
+    "id": 113
+  },
+  "access_token": "15|a7sIpQ6jgcSC1NGlfEGDbMb8mBognTPfAfSsKiWQa882aec1",
+  "token_type": "Bearer"
+}
