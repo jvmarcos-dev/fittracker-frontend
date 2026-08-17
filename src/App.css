@@ -38,3 +38,107 @@
     font-size: 0.9rem;
     line-height: 1.4;
 }
+
+/* Contenedor principal de la rutina */
+.routine-detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.routine-detail-container h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin: 0 0 0.5rem 0;
+    text-transform: capitalize;
+}
+
+.routine-detail-container>p {
+    color: #94a3b8;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 2rem 0;
+}
+
+/* Listado de ejercicios */
+.exercise-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+}
+
+/* Tarjeta individual de ejercicio */
+.exercise-list>div {
+    display: flex;
+    flex-direction: column;
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.exercise-list>div:hover {
+    border-color: cadetblue;
+}
+
+/* Nombre del ejercicio */
+.exercise-list h4 {
+    margin: 0 0 0.5rem 0;
+    color: #f1f5f9;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Etiqueta para el grupo muscular */
+.exercise-list h5 {
+    display: inline-block;
+    align-self: flex-start;
+    margin: 0 0 1rem 0;
+    padding: 0.25rem 0.6rem;
+    background-color: rgba(95, 158, 160, 0.15);
+    color: cadetblue;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    border: 1px solid rgba(95, 158, 160, 0.3);
+}
+
+/* Series y repeticiones */
+.exercise-list p {
+    margin-top: auto;
+    margin-bottom: 0;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background-color: #0f172a;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    text-align: center;
+    border: 1px solid #1e293b;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: #94a3b8;
+    border: 1px solid #334155;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.btn-back:hover {
+    color: #f8fafc;
+    border-color: cadetblue;
+}

@@ -1,15 +1,11 @@
 import { Link } from "react-router-dom";
-import { AuthContext } from "../context/auth";
 import { useContext } from "react";
+import { AuthContext } from "../context/authContext";
 
 function Dashboard({ routines }) {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   return (
     <main>
-      <header>
-        <button onClick={() => logout()}>Cerrar sesión</button>
-      </header>
-
       <h2>Rutinas de {user?.name}</h2>
 
       <div className="routines">

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { authUser } from "../services/authService";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "../hooks/useForm";
-import { AuthContext } from "../context/auth";
+import { AuthContext } from "../context/authContext";
 import { ShowAuth } from "../components/Auth";
 
 const initialFormState = {

@@ -3,11 +3,23 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RoutineDetailPage from "./pages/RoutineDetailPage";
+import { useContext } from "react";
+import { AuthContext } from "./context/authContext";
 
 function App() {
+  const { logout, isAuthenticated } = useContext(AuthContext);
+
   return (
     <BrowserRouter>
-      <h1>Fittracker</h1>
+      <header>
+        <h1>Fittracker</h1>
+        {isAuthenticated ? (
+          <button onClick={() => logout()}>Cerrar sesión</button>
+        ) : (
+          ""
+        )}
+      </header>
       <Routes>
         {/*Ruta para el formulario de login/registro*/}
         <Route
@@ -27,9 +39,8 @@ function App() {
         ></Route>
 
         {/*Ruta para la vista de detalle de cada rutina*/}
-        {/* <Route path="/routines/:id" element={<RoutineDetailPage />} /> */}
+        <Route path="/routines/:id" element={<RoutineDetailPage />} />
 
-        {/* <Route path="/routines/:id" element={<RoutineDetailPage />} /> */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>

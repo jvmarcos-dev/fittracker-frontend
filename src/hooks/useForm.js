@@ -4,7 +4,7 @@ import {
 } from "react"
 import {
     AuthContext
-} from "../context/auth"
+} from "../context/authContext"
 
 export function useForm(initialFormState, onSubmitCallback, action) {
     const [formData, setFormData] = useState(initialFormState)
