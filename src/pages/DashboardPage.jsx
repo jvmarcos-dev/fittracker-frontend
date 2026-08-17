@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getRoutines } from "../services/routineService";
+import Dashboard from "../components/Dashboard";
 
 export default function DashboardPage() {
-  const { user, logout, isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
   const [routines, setRoutines] = useState([]);
   const navigate = useNavigate();
 
@@ -19,30 +20,5 @@ export default function DashboardPage() {
     getRoutines().then((routines) => setRoutines(routines));
   }, [isAuthenticated, navigate]);
 
-  return (
-    <main>
-      <header>
-        <button onClick={() => logout()}>Cerrar sesión</button>
-      </header>
-
-      <h2>Rutinas de {user?.name}</h2>
-
-      <div className="routines">
-        {routines.map((routine) => {
-          return (
-            <Link
-              to={`/routines/${routine.id}`}
-              key={routine.id}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <div>
-                <h3>{routine.name}</h3>
-                <p>{routine.description}</p>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-    </main>
-  );
+  return <Dashboard routines={routines}></Dashboard>;
 }
