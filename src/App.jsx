@@ -12,10 +12,20 @@ function App() {
 
   return (
     <BrowserRouter>
-      <header>
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <h1>Fittracker</h1>
         {isAuthenticated ? (
-          <button onClick={() => logout()}>Cerrar sesión</button>
+          <button
+            style={{ height: "50px", marginBottom: "0", marginTop: "auto" }}
+            onClick={() => logout()}
+          >
+            Cerrar sesión
+          </button>
         ) : (
           ""
         )}
