@@ -14,14 +14,22 @@ const initialFormState = {
 
 export default function LoginPage() {
   const [showLogin, setShowLogin] = useState(false);
-  const { formData, result, handleChange, handleSubmit } = useForm(
-    initialFormState,
-    authUser,
-    showLogin ? "login" : "register",
-  );
 
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const { login } = useContext(AuthContext);
+
+  const handleAuth = async (data) => {
+    const res = await authUser(data, showLogin ? "login" : "register");
+    login(res.access_token, res.user);
+    navigate("/dashboard");
+  };
+
+  const { formData, result, handleChange, handleSubmit } = useForm(
+    initialFormState,
+    handleAuth,
+  );
 
   //si el usuario ya está autenticado, lo enviamos al dashboard
   useEffect(() => {

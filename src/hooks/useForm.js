@@ -1,19 +1,11 @@
 import {
-    useContext,
     useState
 } from "react"
-import {
-    AuthContext
-} from "../context/authContext"
 
-export function useForm(initialFormState, onSubmitCallback, action) {
+export function useForm(initialFormState, onSubmitCallback) {
     const [formData, setFormData] = useState(initialFormState)
-
     const [result, setResult] = useState('')
-
-    const {
-        login
-    } = useContext(AuthContext)
+    const [loading, setLoading] = useState(false)
 
     const handleChange = (e) => {
         setFormData({
@@ -24,13 +16,10 @@ export function useForm(initialFormState, onSubmitCallback, action) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
         try {
-            const responseMessage = await onSubmitCallback(formData, action)
+            const responseMessage = await onSubmitCallback(formData)
             setResult(responseMessage)
-            login(
-                responseMessage.access_token,
-                responseMessage.user
-            )
             //pongo el formulario vacio
             setFormData(initialFormState)
         } catch (error) {
@@ -38,18 +27,22 @@ export function useForm(initialFormState, onSubmitCallback, action) {
             //hago focus al primer elemento del formulario
             e.target.elements[0].focus();
         } finally {
+            setLoading(false)
             //muestro el mensaje durante 5 segundos
             setTimeout(() => {
                 setResult('');
             }, 5000);
         }
-
     }
+
+    const resetForm = () => setFormData(initialFormState)
 
     return ({
         formData,
         result,
+        loading,
         handleChange,
-        handleSubmit
+        handleSubmit,
+        resetForm,
     })
 }
