@@ -36,7 +36,9 @@ export default function RoutineDetailPage() {
 
       <div className="exercise-list">
         {routine.exercises?.map((exercise) => {
-          return <ExerciseCard exercise={exercise}></ExerciseCard>;
+          return (
+            <ExerciseCard key={exercise.id} exercise={exercise}></ExerciseCard>
+          );
         })}
       </div>
     </div>
