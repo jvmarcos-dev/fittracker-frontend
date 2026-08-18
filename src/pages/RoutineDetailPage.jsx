@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authContext";
 import { getRoutineNumber } from "../services/routineService";
 import { Link } from "react-router-dom";
+import ExerciseCard from "../components/ExerciseCard";
 
 export default function RoutineDetailPage() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -35,16 +36,7 @@ export default function RoutineDetailPage() {
 
       <div className="exercise-list">
         {routine.exercises?.map((exercise) => {
-          return (
-            <div key={exercise.id}>
-              <h4>{exercise.name}</h4>
-              <h5>{exercise.muscle_group}</h5>
-              <p>
-                {exercise.pivot.target_sets} series x{" "}
-                {exercise.pivot.target_reps} reps
-              </p>
-            </div>
-          );
+          return <ExerciseCard exercise={exercise}></ExerciseCard>;
         })}
       </div>
     </div>
