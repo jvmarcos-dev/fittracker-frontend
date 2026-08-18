@@ -5,3 +5,5 @@ import {
 export const getRoutines = () => apiFetch('/routines');
 
 export const getRoutineNumber = (number) => apiFetch(`/routines/${number}`)
+
+export const getExercises = () => apiFetch('/exercises')

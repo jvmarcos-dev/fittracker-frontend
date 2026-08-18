@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "name": "Prensa de Piernas 45°",
+    "muscle_group": "Piernas",
+    "description": "Trabajo guiado enfocado en cuádriceps.",
+    "created_at": "2026-08-15 16:51:06",
+    "updated_at": "2026-08-15 16:51:06"
+  },
+  {
+    "id": 2,
+    "name": "Peso Muerto Convencional",
+    "muscle_group": "Espalda",
+    "description": "Ejercicio de bisagra de cadera y cadena posterior.",
+    "created_at": "2026-08-15 16:51:06",
+    "updated_at": "2026-08-15 16:51:06"
+  },
+  {
+    "id": 3,
+    "name": "Aperturas con Mancuernas en Banco Plano",
+    "muscle_group": "Pecho",
+    "description": "Aislamiento de pectoral en posición de estiramiento.",
+    "created_at": "2026-08-15 16:51:06",
+    "updated_at": "2026-08-15 16:51:06"
+  },
+  {
+    "id": 4,
+    "name": "Curl de Bíceps con Barra Z",
+    "muscle_group": "Brazos",
+    "description": "Aislamiento para flexores de codo.",
+    "created_at": "2026-08-15 16:51:06",
+    "updated_at": "2026-08-15 16:51:06"
+  },
+  {
+    "id": 5,
+    "name": "Extensiones de Tríceps en Polea",
+    "muscle_group": "Brazos",
+    "description": "Aislamiento de la cabeza lateral y medial del tríceps.",
+    "created_at": "2026-08-15 16:51:06",
+    "updated_at": "2026-08-15 16:51:06"
+  },
+  {
+    "id": 6,
+    "name": "Press Militar con Barra",
+    "muscle_group": "Hombros",
+    "description": "Empuje vertical para deltoides y tríceps.",
+    "created_at": "2026-08-15 16:51:06",
+    "updated_at": "2026-08-15 16:51:06"
+  },
+  {
+    "id": 7,
+    "name": "Remo con Barra en Pronación",
+    "muscle_group": "Espalda",
+    "description": "Tracción horizontal para densidad de espalda.",
+    "created_at": "2026-08-15 16:51:06",
+    "updated_at": "2026-08-15 16:51:06"
+  },
+  {
+    "id": 8,
+    "name": "Elevaciones Laterales con Mancuernas",
+    "muscle_group": "Hombros",
+    "description": "Aislamiento del deltoides lateral.",
+    "created_at": "2026-08-15 16:51:06",
+    "updated_at": "2026-08-15 16:51:06"
+  }
+]

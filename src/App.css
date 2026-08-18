@@ -182,3 +182,19 @@
     border-color: rgba(248, 113, 113, 0.4);
     background-color: rgba(248, 113, 113, 0.05);
 }
+
+.exercise-card-selectable input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: cadetblue;
+}
+
+.exercise-card-selectable.selected {
+    border-color: cadetblue;
+    background-color: rgba(95, 158, 160, 0.12);
+    /* Fondo sutil con el tono cadetblue */
+    box-shadow: 0 0 0 1px cadetblue;
+    /* Refuerza el borde sin mover el layout */
+    transform: translateY(-2px);
+}
