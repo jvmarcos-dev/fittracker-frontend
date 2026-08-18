@@ -1,11 +1,12 @@
 import "./App.css";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoutineDetailPage from "./pages/RoutineDetailPage";
 import { useContext } from "react";
 import { AuthContext } from "./context/authContext";
+import RoutineCreatePage from "./pages/RoutineCreatePage";
 
 function App() {
   const { logout, isAuthenticated } = useContext(AuthContext);
@@ -18,14 +19,39 @@ function App() {
           justifyContent: "space-between",
         }}
       >
-        <h1>Fittracker</h1>
+        <Link
+          to="/dashboard"
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+            marginBlock: "0.83rem",
+            fontSize: "1.50em",
+            fontWeight: "bold",
+          }}
+        >
+          Fittracker
+        </Link>
         {isAuthenticated ? (
-          <button
-            style={{ height: "50px", marginBottom: "0", marginTop: "auto" }}
-            onClick={() => logout()}
+          <div
+            style={{
+              display: "flex",
+              height: "50px",
+              marginBottom: "0",
+              marginTop: "auto",
+              gap: "20px",
+            }}
           >
-            Cerrar sesión
-          </button>
+            <Link
+              to="/routines/new"
+              className="btn-primary"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Registrar rutina
+            </Link>
+            <button className="btn-secondary" onClick={() => logout()}>
+              Cerrar sesión
+            </button>
+          </div>
         ) : (
           ""
         )}
@@ -50,6 +76,10 @@ function App() {
 
         {/*Ruta para la vista de detalle de cada rutina*/}
         <Route path="/routines/:id" element={<RoutineDetailPage />} />
+        <Route
+          path="/routines/new"
+          element={<RoutineCreatePage></RoutineCreatePage>}
+        ></Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>

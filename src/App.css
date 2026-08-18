@@ -142,3 +142,43 @@
     color: #f8fafc;
     border-color: cadetblue;
 }
+
+/* Registrar rutina */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    background-color: cadetblue;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: filter 0.2s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Cerrar sesión */
+.btn-secondary {
+    background: transparent;
+    color: #94a3b8;
+    border: 1px solid #334155;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.btn-secondary:hover {
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.4);
+    background-color: rgba(248, 113, 113, 0.05);
+}
