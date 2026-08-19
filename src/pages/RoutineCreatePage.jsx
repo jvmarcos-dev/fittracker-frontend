@@ -3,6 +3,7 @@ import { createRoutine, getExercises } from "../services/routineService";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
+import SelectableExerciseCard from "../components/SelectableExerciseCard";
 
 const initialFormState = {
   name: "",
@@ -117,63 +118,17 @@ export default function RoutineCreatePage() {
 
       <div className="exercise-list">
         {exercises?.map((exercise) => {
-          const currentExercise = selectedExercises.find(
-            (item) => item.exercise_id === exercise.id,
-          );
           return (
-            <div
+            <SelectableExerciseCard
               key={exercise.id}
-              onClick={() => handleToogleExercise(exercise.id)}
-              style={{ cursor: "pointer" }}
-              className={`exercise-card-selectable ${isSelected(exercise.id) ? "selected" : ""}`}
-            >
-              <div className="exercise-card-header">
-                <h4>{exercise.name}</h4>
-                <input
-                  type="checkbox"
-                  checked={isSelected(exercise.id)}
-                  onChange={() => {}}
-                ></input>
-                <div>
-                  <h5>{exercise.muscle_group}</h5>
-                  {isSelected(exercise.id) && (
-                    //este onClick sirve para que al pulsar sobre el campo no se deseleccione
-                    <div
-                      onClick={(e) => e.stopPropagation()}
-                      style={{ display: "flex", flexDirection: "column" }}
-                    >
-                      <input
-                        name="target_sets"
-                        placeholder="Sets"
-                        type="text"
-                        value={currentExercise?.target_sets ?? ""}
-                        onChange={(e) =>
-                          handleExerciseChange(
-                            exercise.id,
-                            "target_sets",
-                            e.target.value,
-                          )
-                        }
-                      ></input>
-                      <input
-                        name="target_reps"
-                        placeholder="Reps"
-                        type="text"
-                        value={currentExercise?.target_reps ?? ""}
-                        onChange={(e) =>
-                          handleExerciseChange(
-                            exercise.id,
-                            "target_reps",
-                            e.target.value,
-                          )
-                        }
-                      ></input>
-                    </div>
-                  )}
-                  <p>{exercise.description}</p>
-                </div>
-              </div>
-            </div>
+              exercise={exercise}
+              isSelected={isSelected(exercise.id)}
+              currentData={selectedExercises.find(
+                (item) => item.exercise_id === exercise.id,
+              )}
+              onToogle={() => handleToogleExercise(exercise.id)}
+              onChange={handleExerciseChange}
+            ></SelectableExerciseCard>
           );
         })}
       </div>
