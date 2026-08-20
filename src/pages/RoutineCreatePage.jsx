@@ -28,7 +28,9 @@ export default function RoutineCreatePage() {
       exercises: selectedExercises,
     };
 
-    return await createRoutine(payload);
+    const response = await createRoutine(payload);
+    setSelectedExercises([]);
+    return response;
   };
   const { formData, handleChange, handleSubmit, result } = useForm(
     { name: "", description: "" },
@@ -102,37 +104,40 @@ export default function RoutineCreatePage() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        placeholder="Routine name"
-      ></input>
-      <textarea
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        placeholder="Routine description"
-      ></textarea>
+    <>
+      {result && <p>{result.message}</p>}
+      <form onSubmit={handleSubmit}>
+        <input
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Routine name"
+        ></input>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          placeholder="Routine description"
+        ></textarea>
 
-      <div className="exercise-list">
-        {exercises?.map((exercise) => {
-          return (
-            <SelectableExerciseCard
-              key={exercise.id}
-              exercise={exercise}
-              isSelected={isSelected(exercise.id)}
-              currentData={selectedExercises.find(
-                (item) => item.exercise_id === exercise.id,
-              )}
-              onToogle={() => handleToogleExercise(exercise.id)}
-              onChange={handleExerciseChange}
-            ></SelectableExerciseCard>
-          );
-        })}
-      </div>
-      <button type="submit">Guardar rutina</button>
-    </form>
+        <div className="exercise-list">
+          {exercises?.map((exercise) => {
+            return (
+              <SelectableExerciseCard
+                key={exercise.id}
+                exercise={exercise}
+                isSelected={isSelected(exercise.id)}
+                currentData={selectedExercises.find(
+                  (item) => item.exercise_id === exercise.id,
+                )}
+                onToogle={() => handleToogleExercise(exercise.id)}
+                onChange={handleExerciseChange}
+              ></SelectableExerciseCard>
+            );
+          })}
+        </div>
+        <button type="submit">Guardar rutina</button>
+      </form>
+    </>
   );
 }
