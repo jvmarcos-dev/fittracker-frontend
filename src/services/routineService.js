@@ -12,3 +12,7 @@ export const createRoutine = (routineData) => apiFetch("/routines", {
     method: "POST",
     body: JSON.stringify(routineData)
 })
+
+export const deleteRoutine = (routine) => apiFetch(`/routines/${routine}`, {
+    method: "DELETE"
+})
