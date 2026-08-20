@@ -4,12 +4,16 @@ import { AuthContext } from "../context/authContext";
 import { deleteRoutine, getRoutineNumber } from "../services/routineService";
 import { Link } from "react-router-dom";
 import ExerciseCard from "../components/ExerciseCard";
+import TrashIcon from "../components/icons/TrashIcon";
+import EditIcon from "../components/icons/EditIcon";
+import AddExerciseCard from "../components/AddExerciseCard";
 
 export default function RoutineDetailPage() {
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const [routine, setRoutine] = useState([]);
   const { id } = useParams();
+  const [isEditing, setIsEditing] = useState(false);
 
   ///si no está autenticado, lo enviamos al login
   useEffect(() => {
@@ -30,7 +34,7 @@ export default function RoutineDetailPage() {
 
   return (
     <div className="routine-detail-container">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div style={{ display: "flex" }}>
         <Link
           to="/dashboard"
           className="btn-back"
@@ -39,31 +43,29 @@ export default function RoutineDetailPage() {
           ← Volver a mis rutinas
         </Link>
 
-        <button
-          type="button"
-          onClick={() => onDelete(routine.id)}
-          className="delete-button"
-          aria-label={`Eliminar ${routine.name}`}
-          title="Eliminar"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        <div style={{ display: "flex", marginLeft: "auto", gap: "20px" }}>
+          <button
+            type="button"
+            onClick={() => {
+              setIsEditing(!isEditing);
+            }}
+            className="edit-button"
+            aria-label="Editar rutina"
+            title="Editar"
           >
-            <path d="M3 6h18" />
-            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-            <line x1="10" y1="11" x2="10" y2="17" />
-            <line x1="14" y1="11" x2="14" y2="17" />
-          </svg>
-        </button>
+            <EditIcon></EditIcon>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onDelete(routine.id)}
+            className="delete-button"
+            aria-label={`Eliminar ${routine.name}`}
+            title="Eliminar"
+          >
+            <TrashIcon></TrashIcon>
+          </button>
+        </div>
       </div>
 
       <h2>{routine.name}</h2>
@@ -72,9 +74,14 @@ export default function RoutineDetailPage() {
       <div className="exercise-list">
         {routine.exercises?.map((exercise) => {
           return (
-            <ExerciseCard key={exercise.id} exercise={exercise}></ExerciseCard>
+            <ExerciseCard
+              key={exercise.id}
+              exercise={exercise}
+              edit={isEditing}
+            ></ExerciseCard>
           );
         })}
+        {isEditing && <AddExerciseCard onAdd={() => {}} />}
       </div>
     </div>
   );
