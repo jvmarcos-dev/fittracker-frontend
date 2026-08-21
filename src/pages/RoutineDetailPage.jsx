@@ -1,12 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authContext";
-import { deleteRoutine, getRoutineNumber } from "../services/routineService";
+import {
+  deleteRoutine,
+  getExercises,
+  getRoutineNumber,
+} from "../services/routineService";
 import { Link } from "react-router-dom";
 import ExerciseCard from "../components/ExerciseCard";
 import TrashIcon from "../components/icons/TrashIcon";
 import EditIcon from "../components/icons/EditIcon";
 import AddExerciseCard from "../components/AddExerciseCard";
+import SelectableExerciseCard from "../components/SelectableExerciseCard";
 
 export default function RoutineDetailPage() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -14,6 +19,9 @@ export default function RoutineDetailPage() {
   const [routine, setRoutine] = useState([]);
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
+  const [exercises, setExercises] = useState([]);
+  const [showExercises, setShowExercises] = useState(false);
+  const [selectedExercises, setSelectedExercises] = useState([]);
 
   ///si no está autenticado, lo enviamos al login
   useEffect(() => {
@@ -30,6 +38,11 @@ export default function RoutineDetailPage() {
     const response = await deleteRoutine(numberRoutine);
     navigate("/dashboard");
     return response;
+  };
+
+  const onAdd = () => {
+    getExercises().then((exercises) => setExercises(exercises));
+    setShowExercises(true);
   };
 
   return (
@@ -81,7 +94,25 @@ export default function RoutineDetailPage() {
             ></ExerciseCard>
           );
         })}
-        {isEditing && <AddExerciseCard onAdd={() => {}} />}
+        {isEditing && !showExercises && <AddExerciseCard onAdd={onAdd} />}
+        {isEditing && showExercises && (
+          <div className="exercise-list">
+            {exercises?.map((exercise) => {
+              return (
+                <SelectableExerciseCard
+                  key={exercise.id}
+                  exercise={exercise}
+                  isSelected={{}}
+                  currentData={selectedExercises.find(
+                    (item) => item.exercise_id === exercise.id,
+                  )}
+                  onToogle={() => {}}
+                  onChange={{}}
+                ></SelectableExerciseCard>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
