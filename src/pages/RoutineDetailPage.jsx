@@ -107,8 +107,9 @@ export default function RoutineDetailPage() {
             <div className="exercise-list">
               {exercises
                 ?.filter((exercise) => {
-                  return routine.exercises.some(
-                    (item) => item.id !== exercise.id,
+                  //busco si el ejercicio ya está en la rutina, si es cierto lo descarto
+                  return !routine.exercises.some(
+                    (item) => item.id === exercise.id,
                   );
                 })
                 .map((exercise) => {
