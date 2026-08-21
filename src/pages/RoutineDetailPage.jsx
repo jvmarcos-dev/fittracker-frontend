@@ -12,6 +12,7 @@ import TrashIcon from "../components/icons/TrashIcon";
 import EditIcon from "../components/icons/EditIcon";
 import AddExerciseCard from "../components/AddExerciseCard";
 import SelectableExerciseCard from "../components/SelectableExerciseCard";
+import { useExerciseSelection } from "../hooks/useExerciseSelection";
 
 export default function RoutineDetailPage() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -21,8 +22,12 @@ export default function RoutineDetailPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [exercises, setExercises] = useState([]);
   const [showExercises, setShowExercises] = useState(false);
-  const [selectedExercises, setSelectedExercises] = useState([]);
-
+  const {
+    selectedExercises,
+    handleToogleExercise,
+    handleExerciseChange,
+    isSelected,
+  } = useExerciseSelection();
   ///si no está autenticado, lo enviamos al login
   useEffect(() => {
     if (!isAuthenticated) {
@@ -44,6 +49,8 @@ export default function RoutineDetailPage() {
     getExercises().then((exercises) => setExercises(exercises));
     setShowExercises(true);
   };
+
+  const onSave = () => {};
 
   return (
     <div className="routine-detail-container">
@@ -96,22 +103,31 @@ export default function RoutineDetailPage() {
         })}
         {isEditing && !showExercises && <AddExerciseCard onAdd={onAdd} />}
         {isEditing && showExercises && (
-          <div className="exercise-list">
-            {exercises?.map((exercise) => {
-              return (
-                <SelectableExerciseCard
-                  key={exercise.id}
-                  exercise={exercise}
-                  isSelected={{}}
-                  currentData={selectedExercises.find(
-                    (item) => item.exercise_id === exercise.id,
-                  )}
-                  onToogle={() => {}}
-                  onChange={{}}
-                ></SelectableExerciseCard>
-              );
-            })}
-          </div>
+          <>
+            <div className="exercise-list">
+              {exercises
+                ?.filter((exercise) => {
+                  return routine.exercises.some(
+                    (item) => item.id !== exercise.id,
+                  );
+                })
+                .map((exercise) => {
+                  return (
+                    <SelectableExerciseCard
+                      key={exercise.id}
+                      exercise={exercise}
+                      isSelected={isSelected(exercise.id)}
+                      currentData={selectedExercises.find(
+                        (item) => item.exercise_id === exercise.id,
+                      )}
+                      onToogle={() => handleToogleExercise(exercise.id)}
+                      onChange={handleExerciseChange}
+                    ></SelectableExerciseCard>
+                  );
+                })}
+            </div>
+            <button onClick={onSave}>Guardar cambios</button>
+          </>
         )}
       </div>
     </div>
