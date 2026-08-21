@@ -4,6 +4,7 @@ import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import SelectableExerciseCard from "../components/SelectableExerciseCard";
+import { useExerciseSelection } from "../hooks/useExerciseSelection";
 
 const initialFormState = {
   name: "",
@@ -21,7 +22,13 @@ export default function RoutineCreatePage() {
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const [exercises, setExercises] = useState();
-  const [selectedExercises, setSelectedExercises] = useState([]);
+  const {
+    selectedExercises,
+    setSelectedExercises,
+    isSelected,
+    handleToogleExercise,
+    handleExerciseChange,
+  } = useExerciseSelection();
   const handleCreateRoutine = async (formData) => {
     const payload = {
       ...formData, //name y description
@@ -47,13 +54,6 @@ export default function RoutineCreatePage() {
     getExercises().then((exercises) => setExercises(exercises));
   }, [isAuthenticated, navigate]);
 
-  const isSelected = (id) => {
-    //includes se usa cuando hay un array, some para objetos
-    //return selectedExercises.includes(id);
-
-    return selectedExercises.some((item) => item.exercise_id === id);
-  };
-
   //esta funcion servia para guardar ids, ahora que guardo objetos al pasar las reps ya no sirve
   /*const handleToogleExercise = (id) => {
     setSelectedExerciseIds((prev) =>
@@ -64,44 +64,6 @@ export default function RoutineCreatePage() {
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };*/
-
-  const handleToogleExercise = (id) => {
-    setSelectedExercises((prev) => {
-      //comprobamos si ya existe algun objeto con ese ID
-      const exists = prev.some((item) => item.exercise_id === id);
-
-      if (exists) {
-        //si ya estaba, lo quitamos
-        return prev.filter((item) => item.exercise_id !== id);
-      } else {
-        //si no estaba, lo añadimos
-        return [...prev, { exercise_id: id, target_sets: "", target_reps: "" }];
-      }
-    });
-  };
-
-  const handleExerciseChange = (id, field, value) => {
-    setSelectedExercises((prev) =>
-      prev.map((item) => {
-        //recorro los ejercicios
-        if (item.exercise_id === id) {
-          //al ejercicio actual creo una copia exacta y le modifico un unico campo (field dinamico)
-          //el ternario interno hace que si el usuario borro todo, deja el valor vacio
-          //si hay un numero escrito lo convierte a numero mediante un cast
-          return {
-            ...item,
-            [field]:
-              field === "target_sets"
-                ? value === ""
-                  ? ""
-                  : Number(value)
-                : String(value),
-          };
-        }
-        return item;
-      }),
-    );
-  };
 
   return (
     <>
