@@ -16,3 +16,8 @@ export const createRoutine = (routineData) => apiFetch("/routines", {
 export const deleteRoutine = (routine) => apiFetch(`/routines/${routine}`, {
     method: "DELETE"
 })
+
+export const updateRoutine = (routine, data) => apiFetch(`/routines/${routine}`, {
+    method: "PUT",
+    body: JSON.stringify(data)
+})
