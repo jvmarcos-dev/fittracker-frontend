@@ -1,0 +1,39 @@
+{
+  "routine_id": 2,
+  "name": "Espalda y Hombro",
+  "description": "Rutina de fuerza enfocada en tirones",
+  "exercises": [
+    {
+      "id": 2,
+      "name": "Peso Muerto Convencional",
+      "muscle_group": "Espalda",
+      "target_sets": 4,
+      "target_reps": "8-10",
+      "previous_sets": [
+        { "set_number": 1, "weight": "100.00", "reps": 10 },
+        { "set_number": 2, "weight": "110.00", "reps": 8 },
+        { "set_number": 3, "weight": "110.00", "reps": 8 },
+        { "set_number": 4, "weight": "115.00", "reps": 6 }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Remo con Barra en Pronación",
+      "muscle_group": "Espalda",
+      "target_sets": 4,
+      "target_reps": "8-10",
+      "previous_sets": [
+        { "set_number": 1, "weight": "70.00", "reps": 10 },
+        { "set_number": 2, "weight": "70.00", "reps": 9 }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Elevaciones Laterales con Mancuernas",
+      "muscle_group": "Hombros",
+      "target_sets": 4,
+      "target_reps": "12-15",
+      "previous_sets": []
+    }
+  ]
+}
