@@ -14,6 +14,7 @@ import EditIcon from "../components/icons/EditIcon";
 import AddExerciseCard from "../components/AddExerciseCard";
 import SelectableExerciseCard from "../components/SelectableExerciseCard";
 import { useExerciseSelection } from "../hooks/useExerciseSelection";
+import PlayIcon from "../components/icons/PlayIcon";
 
 export default function RoutineDetailPage() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -131,6 +132,24 @@ export default function RoutineDetailPage() {
         </Link>
 
         <div style={{ display: "flex", marginLeft: "auto", gap: "20px" }}>
+          <button
+            type="button"
+            onClick={() => {
+              navigate(`/routines/${id}/workout`);
+            }}
+            className="start-button"
+            aria-label={`Comenzar ${routine.name}`}
+            title="Comenzar rutina"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <PlayIcon></PlayIcon>Iniciar entrenamiento
+          </button>
+
           <button
             type="button"
             onClick={() => {

@@ -7,6 +7,7 @@ import RoutineDetailPage from "./pages/RoutineDetailPage";
 import { useContext } from "react";
 import { AuthContext } from "./context/authContext";
 import RoutineCreatePage from "./pages/RoutineCreatePage";
+import WorkoutPage from "./pages/WorkoutPage";
 
 function App() {
   const { logout, isAuthenticated } = useContext(AuthContext);
@@ -80,6 +81,7 @@ function App() {
           path="/routines/new"
           element={<RoutineCreatePage></RoutineCreatePage>}
         ></Route>
+        <Route path="/routines/:id/workout" element={<WorkoutPage />} />
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
