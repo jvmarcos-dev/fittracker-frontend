@@ -1,6 +1,30 @@
+import { useEffect, useState } from "react";
 import mockWorkout from "../mocks/activeWorkout.json";
 import "../styles/workout.css";
 export default function WorkoutPage() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSeconds((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const secs = (totalSeconds % 60).toString().padStart(2, "0");
+
+    if (hours > 0) {
+      return `${hours}:${minutes}:${secs}`;
+    }
+
+    return `${minutes}:${secs}`;
+  };
+
   return (
     <>
       <div className="workout">
@@ -20,7 +44,9 @@ export default function WorkoutPage() {
             }}
           >
             <p style={{ margin: "0" }}>Duración</p>
-            <p style={{ margin: "0", color: "#0a84ff" }}>32:15</p>
+            <p style={{ margin: "0", color: "#0a84ff" }}>
+              {formatTime(seconds)}
+            </p>
           </div>
 
           <div
