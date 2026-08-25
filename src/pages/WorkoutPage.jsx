@@ -90,6 +90,25 @@ export default function WorkoutPage() {
     }));
   };
 
+  const handleRemoveSet = (exerciseId) => {
+    setWorkout((prevWorkout) => ({
+      ...prevWorkout,
+      exercises: prevWorkout.exercises.map((prevExercise) => {
+        if (prevExercise.id === exerciseId) {
+          return {
+            ...prevExercise,
+            sets:
+              prevExercise.sets.length > 1
+                ? prevExercise.sets.slice(0, -1)
+                : prevExercise.sets,
+          };
+        }
+
+        return prevExercise;
+      }),
+    }));
+  };
+
   return (
     <>
       <div className="workout">
@@ -194,6 +213,12 @@ export default function WorkoutPage() {
 
                 <button type="button" onClick={() => handleAddSet(exercise.id)}>
                   + Agregar serie
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveSet(exercise.id)}
+                >
+                  - Eliminar última serie
                 </button>
               </div>
             );
