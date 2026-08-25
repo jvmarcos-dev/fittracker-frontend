@@ -144,3 +144,48 @@
 .exercise>button:hover {
     background-color: #3a3a3c;
 }
+
+/* Subtítulo del ejercicio */
+.exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+.exercise-target {
+    font-size: 0.8rem;
+    color: #8e8e93;
+}
+
+/* Fila de títulos de columna */
+.exercise-table-header {
+    display: grid;
+    grid-template-columns: 45px 1.2fr 75px 75px 35px;
+    gap: 10px;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #636366;
+    padding: 0 4px 6px 4px;
+}
+
+.exercise-table-header span:nth-child(2) {
+    text-align: left;
+}
+
+/* Guion de la serie previa centrado y discreto */
+.past-set p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #636366;
+    font-weight: 500;
+}
+
+/* Placeholders de los inputs */
+.set-kg input::placeholder,
+.set-reps input::placeholder {
+    color: #48484a;
+    font-weight: 400;
+}

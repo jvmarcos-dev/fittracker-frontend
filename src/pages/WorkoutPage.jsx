@@ -2,6 +2,35 @@ import { useEffect, useState } from "react";
 import mockWorkout from "../mocks/activeWorkout.json";
 import "../styles/workout.css";
 export default function WorkoutPage() {
+  //en el estado guardo lo que recibo del fetch y obtengo la cantidad de series a pintar
+  //que es la cantidad que indica en target_sets
+  const [workout, setWorkout] = useState(() => ({
+    ...mockWorkout,
+    exercises: mockWorkout.exercises.map((exercise) => {
+      //creo un array con la longitud de las series totales
+      const generatedSets = Array.from(
+        { length: exercise.target_sets },
+        (_, index) => {
+          const prev = exercise.previous_sets[index];
+
+          //en el array para cada posicion meto sus valores correspondientes
+          return {
+            set_number: index + 1,
+            weight: prev ? prev.weight : "",
+            reps: prev ? prev.reps : "",
+            previous: prev ? `${Number(prev.weight)} x ${prev.reps}` : "-",
+            completed: false,
+          };
+        },
+      );
+
+      //devuelvo el ejercicio añadiendole en sets el array
+      return {
+        ...exercise,
+        sets: generatedSets,
+      };
+    }),
+  }));
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
@@ -24,6 +53,8 @@ export default function WorkoutPage() {
 
     return `${minutes}:${secs}`;
   };
+
+  const handleAddSet = (exerciseId) => {};
 
   return (
     <>
@@ -71,38 +102,65 @@ export default function WorkoutPage() {
         </header>
 
         <section className="exercises">
-          {mockWorkout.exercises.map((exercise) => {
+          {workout.exercises.map((exercise) => {
             return (
-              <div className="exercise">
-                <h3>{exercise.name}</h3>
+              <div className="exercise" key={exercise.id}>
+                <div className="exercise-header">
+                  <h3>{exercise.name}</h3>
+                  <span className="exercise-target">
+                    {exercise.muscle_group} · {exercise.target_sets} x{" "}
+                    {exercise.target_reps || "8-12"}
+                  </span>
+                </div>
 
-                {exercise.previous_sets.map((set) => {
-                  return (
-                    <div className="exercise-details">
-                      <div className="serie-number">
-                        <p>{set.set_number}</p>
-                      </div>
+                <div className="exercise-table-header">
+                  <span>SERIE</span>
+                  <span>ANTERIOR</span>
+                  <span>KG</span>
+                  <span>REPS</span>
+                  <span>✓</span>
+                </div>
 
-                      <div className="past-set">
-                        <p>
-                          {Number(set.weight)} x {set.reps}
-                        </p>
-                      </div>
-
-                      <div className="set-kg">
-                        <input type="text" value={Number(set.weight)}></input>
-                      </div>
-
-                      <div className="set-reps">
-                        <input type="text" value={set.reps}></input>
-                      </div>
-
-                      <input type="checkbox"></input>
+                {exercise.sets.map((set) => (
+                  <div className="exercise-details" key={set.set_number}>
+                    <div className="serie-number">
+                      <p>{set.set_number}</p>
                     </div>
-                  );
-                })}
 
-                <button> + Agregar serie</button>
+                    <div className="past-set">
+                      <p>{set.previous}</p>
+                    </div>
+
+                    <div className="set-kg">
+                      <input
+                        type="number"
+                        step="any"
+                        placeholder="0"
+                        value={set.weight !== "" ? Number(set.weight) : ""}
+                        onChange={() => {}}
+                      />
+                    </div>
+
+                    <div className="set-reps">
+                      <input
+                        type="number"
+                        placeholder="0"
+                        value={set.reps}
+                        onChange={() => {}}
+                      />
+                    </div>
+
+                    <input
+                      type="checkbox"
+                      checked={set.completed}
+                      onChange={() => {}}
+                    />
+                  </div>
+                ))}
+
+                <button type="button" onClick={() => handleAddSet(exercise.id)}>
+                  + Agregar serie
+                </button>
               </div>
             );
           })}
