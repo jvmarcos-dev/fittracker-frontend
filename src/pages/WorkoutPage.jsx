@@ -54,7 +54,41 @@ export default function WorkoutPage() {
     return `${minutes}:${secs}`;
   };
 
-  const handleAddSet = (exerciseId) => {};
+  const handleAddSet = (exerciseId) => {
+    const exercise = workout.exercises.find((item) => item.id === exerciseId);
+    const sets = exercise.sets.length + 1;
+    let prevWeight = "";
+    let prevReps = "";
+    if (exercise.previous_sets[sets - 1]) {
+      prevWeight = exercise.previous_sets[sets - 1].weight;
+      prevReps = exercise.previous_sets[sets - 1].reps;
+    }
+
+    const newSet = {
+      set_number: sets,
+      weight: prevWeight,
+      reps: prevReps,
+      previous: prevWeight !== "" ? `${Number(prevWeight)} x ${prevReps}` : "-",
+      completed: false,
+    };
+
+    setWorkout((prevWorkout) => ({
+      ...prevWorkout,
+      //recorro los ejercicios en busca del pulsado
+      exercises: prevWorkout.exercises.map((item) => {
+        if (item.id === exerciseId) {
+          //si es el pulsado, le añado la nueva serie
+          return {
+            ...item,
+            sets: [...item.sets, newSet],
+          };
+        }
+
+        //los demas ejercicios se devuelven como estaban
+        return item;
+      }),
+    }));
+  };
 
   return (
     <>
