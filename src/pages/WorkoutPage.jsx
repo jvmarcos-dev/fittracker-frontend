@@ -109,6 +109,32 @@ export default function WorkoutPage() {
     }));
   };
 
+  const handleSetChange = (exerciseId, setNumber, field, value) => {
+    setWorkout((prevWorkout) => ({
+      ...prevWorkout,
+      exercises: prevWorkout.exercises.map((prevExercise) => {
+        if (prevExercise.id === exerciseId) {
+          return {
+            ...prevExercise,
+            sets: prevExercise.sets.map((prevSet) => {
+              if (prevSet.set_number === setNumber) {
+                return {
+                  ...prevSet,
+                  //para propiedades dinamicas hay que ponerlo entre corchetes
+                  [field]: value,
+                };
+              }
+
+              return prevSet;
+            }),
+          };
+        }
+
+        return prevExercise;
+      }),
+    }));
+  };
+
   return (
     <>
       <div className="workout">
@@ -190,7 +216,14 @@ export default function WorkoutPage() {
                         step="any"
                         placeholder="0"
                         value={set.weight !== "" ? Number(set.weight) : ""}
-                        onChange={() => {}}
+                        onChange={(e) =>
+                          handleSetChange(
+                            exercise.id,
+                            set.set_number,
+                            "weight",
+                            e.target.value,
+                          )
+                        }
                       />
                     </div>
 
@@ -199,14 +232,28 @@ export default function WorkoutPage() {
                         type="number"
                         placeholder="0"
                         value={set.reps}
-                        onChange={() => {}}
+                        onChange={(e) =>
+                          handleSetChange(
+                            exercise.id,
+                            set.set_number,
+                            "reps",
+                            e.target.value,
+                          )
+                        }
                       />
                     </div>
 
                     <input
                       type="checkbox"
                       checked={set.completed}
-                      onChange={() => {}}
+                      onChange={(e) =>
+                        handleSetChange(
+                          exercise.id,
+                          set.set_number,
+                          "completed",
+                          e.target.checked,
+                        )
+                      }
                     />
                   </div>
                 ))}
