@@ -135,6 +135,30 @@ export default function WorkoutPage() {
     }));
   };
 
+  const handleFinishWorkout = () => {
+    const finishedPayload = {
+      routine_id: workout.routine_id,
+      duration_seconds: seconds,
+      completed_at: new Date().toISOString(),
+      exercises: workout.exercises
+        .map((exercise) => ({
+          exercise_id: exercise.id,
+          //solo guardo las series que estén completadas
+          sets: exercise.sets
+            .filter((set) => set.completed)
+            .map((set) => ({
+              set_number: set.set_number,
+              weight: Number(set.weight) || 0,
+              reps: Number(set.reps) || 0,
+            })),
+          //descarto los ejercicios sin series hechas
+        }))
+        .filter((exercise) => exercise.sets.length > 0),
+    };
+
+    console.log("Fetch: ", finishedPayload);
+  };
+
   return (
     <>
       <div className="workout">
@@ -166,7 +190,7 @@ export default function WorkoutPage() {
             }}
           >
             <p style={{ margin: "0" }}>Rutina</p>
-            <p style={{ margin: "0", color: "#0a84ff" }}>{mockWorkout.name}</p>
+            <p style={{ margin: "0", color: "#0a84ff" }}>{workout.name}</p>
           </div>
 
           <div
@@ -176,7 +200,7 @@ export default function WorkoutPage() {
               justifyContent: "center",
             }}
           >
-            <button>Finalizar</button>
+            <button onClick={handleFinishWorkout}>Finalizar</button>
           </div>
         </header>
 
