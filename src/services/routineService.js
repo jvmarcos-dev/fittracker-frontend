@@ -23,3 +23,8 @@ export const updateRoutine = (routine, data) => apiFetch(`/routines/${routine}`,
 })
 
 export const startRoutine = (routine) => apiFetch(`/routines/${routine}/start`)
+
+export const finishRoutine = (routine, data) => apiFetch(`/routines/${routine}/finish`, {
+    method: "POST",
+    body: JSON.stringify(data)
+})

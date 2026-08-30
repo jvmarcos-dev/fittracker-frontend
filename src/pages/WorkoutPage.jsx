@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "../styles/workout.css";
-import { useParams } from "react-router-dom";
-import { startRoutine } from "../services/routineService";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { finishRoutine, startRoutine } from "../services/routineService";
 export default function WorkoutPage() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [workout, setWorkout] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchWorkout = async () => {
       setLoading(true);
@@ -162,26 +163,40 @@ export default function WorkoutPage() {
     }));
   };
 
-  const handleFinishWorkout = () => {
+  const handleFinishWorkout = async () => {
+    const formattedExercises = workout.exercises
+      .map((exercise) => ({
+        exercise_id: exercise.id,
+        //solo guardo las series que estén completadas
+        sets: exercise.sets
+          .filter((set) => set.completed && Number(set.reps) > 0)
+          .map((set) => ({
+            set_number: set.set_number,
+            weight: Number(set.weight) || 0,
+            reps: Number(set.reps),
+          })),
+        //descarto los ejercicios sin series hechas o con 0 reps
+      }))
+      .filter((exercise) => exercise.sets.length > 0);
+
     const finishedPayload = {
       routine_id: workout.routine_id,
       duration_seconds: seconds,
-      completed_at: new Date().toISOString(),
-      exercises: workout.exercises
-        .map((exercise) => ({
-          exercise_id: exercise.id,
-          //solo guardo las series que estén completadas
-          sets: exercise.sets
-            .filter((set) => set.completed)
-            .map((set) => ({
-              set_number: set.set_number,
-              weight: Number(set.weight) || 0,
-              reps: Number(set.reps) || 0,
-            })),
-          //descarto los ejercicios sin series hechas
-        }))
-        .filter((exercise) => exercise.sets.length > 0),
+      performed_at: new Date().toISOString(),
+      exercises: formattedExercises,
     };
+
+    try {
+      setLoading(true);
+      const data = await finishRoutine(id, finishedPayload);
+
+      //si ha ido todo bien vuelve a la pantalla de rutinas
+      navigate("/routines");
+    } catch (err) {
+      setError(err.message || "Error al guardar el entrenamiento");
+    } finally {
+      setLoading(false);
+    }
 
     console.log("Fetch: ", finishedPayload);
   };
