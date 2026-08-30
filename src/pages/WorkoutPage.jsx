@@ -1,36 +1,63 @@
 import { useEffect, useState } from "react";
-import mockWorkout from "../mocks/activeWorkout.json";
 import "../styles/workout.css";
+import { useParams } from "react-router-dom";
+import { startRoutine } from "../services/routineService";
 export default function WorkoutPage() {
-  //en el estado guardo lo que recibo del fetch y obtengo la cantidad de series a pintar
-  //que es la cantidad que indica en target_sets
-  const [workout, setWorkout] = useState(() => ({
-    ...mockWorkout,
-    exercises: mockWorkout.exercises.map((exercise) => {
-      //creo un array con la longitud de las series totales
-      const generatedSets = Array.from(
-        { length: exercise.target_sets },
-        (_, index) => {
-          const prev = exercise.previous_sets[index];
+  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
+  const [workout, setWorkout] = useState(null);
+  useEffect(() => {
+    const fetchWorkout = async () => {
+      setLoading(true);
+      setError(null);
 
-          //en el array para cada posicion meto sus valores correspondientes
-          return {
-            set_number: index + 1,
-            weight: prev ? prev.weight : "",
-            reps: prev ? prev.reps : "",
-            previous: prev ? `${Number(prev.weight)} x ${prev.reps}` : "-",
-            completed: false,
-          };
-        },
-      );
+      try {
+        const workoutData = await startRoutine(id);
 
-      //devuelvo el ejercicio añadiendole en sets el array
-      return {
-        ...exercise,
-        sets: generatedSets,
-      };
-    }),
-  }));
+        const preparedWorkout = {
+          ...workoutData,
+          exercises: workoutData.exercises.map((exercise) => {
+            //creo un array con la longitud de las series totales
+            const generatedSets = Array.from(
+              { length: exercise.target_sets },
+              (_, index) => {
+                const prev = exercise.previous_sets[index];
+
+                //en el array para cada posicion meto sus valores correspondientes
+                return {
+                  set_number: index + 1,
+                  weight: prev ? prev.weight : "",
+                  reps: prev ? prev.reps : "",
+                  previous: prev
+                    ? `${Number(prev.weight)} x ${prev.reps}`
+                    : "-",
+                  completed: false,
+                };
+              },
+            );
+
+            //devuelvo el ejercicio añadiendole en sets el array
+            return {
+              ...exercise,
+              sets: generatedSets,
+            };
+          }),
+        };
+
+        setWorkout(preparedWorkout);
+      } catch (err) {
+        setError(err.message || "Error al cargar la rutina");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchWorkout();
+    }
+  }, [id]);
+
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
@@ -158,6 +185,18 @@ export default function WorkoutPage() {
 
     console.log("Fetch: ", finishedPayload);
   };
+
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  if (!workout) {
+    return null;
+  }
 
   return (
     <>

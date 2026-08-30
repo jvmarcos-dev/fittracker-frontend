@@ -21,3 +21,5 @@ export const updateRoutine = (routine, data) => apiFetch(`/routines/${routine}`,
     method: "PUT",
     body: JSON.stringify(data)
 })
+
+export const startRoutine = (routine) => apiFetch(`/routines/${routine}/start`)
