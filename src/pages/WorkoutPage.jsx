@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../styles/workout.css";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { finishRoutine, startRoutine } from "../services/routineService";
+import TrashIcon from "../components/icons/TrashIcon";
 export default function WorkoutPage() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -197,8 +198,17 @@ export default function WorkoutPage() {
     } finally {
       setLoading(false);
     }
+  };
 
-    console.log("Fetch: ", finishedPayload);
+  const handleRemoveExercise = (exerciseId) => {
+    //TODO: Para confirmar que el usuario quiere eliminar, primero pulsar sobre 3 puntos
+    //y despues que aparezca la papelera
+    setWorkout((prev) => ({
+      ...prev,
+      exercises: prev.exercises.filter(
+        (exercise) => exercise.id !== exerciseId,
+      ),
+    }));
   };
 
   if (loading) {
@@ -267,6 +277,16 @@ export default function WorkoutPage() {
                   <span className="exercise-target">
                     {exercise.muscle_group} · {exercise.target_sets} x{" "}
                     {exercise.target_reps || "8-12"}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveExercise(exercise.id)}
+                      className="delete-button"
+                      style={{ backgroundColor: "#3f1414", color: "#ef4444" }}
+                      aria-label={`Eliminar ejercicio`}
+                      title="Eliminar"
+                    >
+                      <TrashIcon></TrashIcon>
+                    </button>
                   </span>
                 </div>
 
