@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import "../styles/workout.css";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { finishRoutine, startRoutine } from "../services/routineService";
+import {
+  finishRoutine,
+  getExercises,
+  startRoutine,
+} from "../services/routineService";
 import TrashIcon from "../components/icons/TrashIcon";
 export default function WorkoutPage() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [workout, setWorkout] = useState(null);
+
+  const [showModal, setShowModal] = useState(false);
+  const [exercises, setExercises] = useState([]);
+  const [searchExercise, setSearchExercise] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     const fetchWorkout = async () => {
@@ -211,6 +219,42 @@ export default function WorkoutPage() {
     }));
   };
 
+  const handleOpenExercise = (exercise) => {
+    const exerciseToAdd = {
+      id: exercise.id,
+      name: exercise.name,
+      muscle_group: exercise.muscle_group,
+      target_sets: 1,
+      target_reps: "8-12",
+      previous_sets: [], //TODO: Crear endpoint en el backend para obtener previous_sets
+      sets: [
+        {
+          set_number: 1,
+          weight: "",
+          reps: "",
+          previous: "-",
+          completed: false,
+        },
+      ],
+    };
+    setWorkout((prev) => ({
+      ...prev,
+      exercises: [...prev.exercises, exerciseToAdd],
+    }));
+    setSearchExercise("");
+  };
+
+  const handleOpenAddExercise = async () => {
+    //muestra el modal
+    setShowModal(true);
+    //si no hay ejercicios (es la primera vez), se hace la petición
+    //si ya están registrados no es necesario volver a consultar en la BBDD
+    if (exercises.length === 0) {
+      const fetchExercises = await getExercises();
+      setExercises(fetchExercises);
+    }
+  };
+
   if (loading) {
     return <p>Cargando...</p>;
   }
@@ -368,8 +412,73 @@ export default function WorkoutPage() {
               </div>
             );
           })}
+          {/* Botón para abrir el selector de ejercicios */}
+          <button
+            type="button"
+            onClick={handleOpenAddExercise}
+            style={{
+              width: "100%",
+              padding: "14px",
+              marginTop: "16px",
+              backgroundColor: "#1c1c1e",
+              color: "#0a84ff",
+              border: "1px dashed #3a3a3c",
+              borderRadius: "10px",
+              fontSize: "15px",
+              fontWeight: "600",
+              cursor: "pointer",
+            }}
+          >
+            + Añadir ejercicio
+          </button>
         </section>
       </div>
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Añadir ejercicio</h3>
+              <span
+                className="material-symbols-outlined modal-close-btn"
+                onClick={() => setShowModal(false)}
+              >
+                close
+              </span>
+            </div>
+
+            <input
+              type="text"
+              placeholder="Buscar ejercicio..."
+              className="modal-search-input"
+            />
+
+            <div className="modal-exercise-list">
+              {exercises
+                ?.filter((exercise) => {
+                  return !workout.exercises.some(
+                    (item) => item.id === exercise.id,
+                  );
+                })
+                .map((exercise) => {
+                  return (
+                    <div
+                      key={exercise.id}
+                      className="modal-exercise-item"
+                      onClick={() => handleOpenExercise(exercise)}
+                    >
+                      <span className="modal-exercise-name">
+                        {exercise.name}
+                      </span>
+                      <span className="modal-exercise-muscle">
+                        {exercise.muscle_group}
+                      </span>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
