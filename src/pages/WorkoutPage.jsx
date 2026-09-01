@@ -255,6 +255,10 @@ export default function WorkoutPage() {
     }
   };
 
+  const handleSearchExercise = (e) => {
+    setSearchExercise(e);
+  };
+
   if (loading) {
     return <p>Cargando...</p>;
   }
@@ -440,7 +444,10 @@ export default function WorkoutPage() {
               <h3>Añadir ejercicio</h3>
               <span
                 className="material-symbols-outlined modal-close-btn"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setSearchExercise("");
+                }}
               >
                 close
               </span>
@@ -450,14 +457,25 @@ export default function WorkoutPage() {
               type="text"
               placeholder="Buscar ejercicio..."
               className="modal-search-input"
+              value={searchExercise}
+              onChange={(e) => handleSearchExercise(e.target.value)}
             />
 
             <div className="modal-exercise-list">
               {exercises
                 ?.filter((exercise) => {
-                  return !workout.exercises.some(
+                  //compruebo que no está ya añadido
+                  const isNotAdded = !workout.exercises.some(
                     (item) => item.id === exercise.id,
                   );
+
+                  //compruebo que coincida con la busqueda
+                  const matchesSearch = exercise.name
+                    .toLowerCase()
+                    .includes(searchExercise.toLowerCase());
+
+                  //pasa el filtro si cumple ambas
+                  return isNotAdded && matchesSearch;
                 })
                 .map((exercise) => {
                   return (
