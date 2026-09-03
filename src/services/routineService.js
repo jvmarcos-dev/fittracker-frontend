@@ -28,3 +28,5 @@ export const finishRoutine = (routine, data) => apiFetch(`/routines/${routine}/f
     method: "POST",
     body: JSON.stringify(data)
 })
+
+export const getPreviousSets = (exercise) => apiFetch(`/exercises/${exercise}/previous`)

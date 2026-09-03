@@ -4,6 +4,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import {
   finishRoutine,
   getExercises,
+  getPreviousSets,
   startRoutine,
 } from "../services/routineService";
 import TrashIcon from "../components/icons/TrashIcon";
@@ -39,9 +40,6 @@ export default function WorkoutPage() {
                   set_number: index + 1,
                   weight: prev ? prev.weight : "",
                   reps: prev ? prev.reps : "",
-                  previous: prev
-                    ? `${Number(prev.weight)} x ${prev.reps}`
-                    : "-",
                   completed: false,
                 };
               },
@@ -93,19 +91,15 @@ export default function WorkoutPage() {
 
   const handleAddSet = (exerciseId) => {
     const exercise = workout.exercises.find((item) => item.id === exerciseId);
-    const sets = exercise.sets.length + 1;
-    let prevWeight = "";
-    let prevReps = "";
-    if (exercise.previous_sets[sets - 1]) {
-      prevWeight = exercise.previous_sets[sets - 1].weight;
-      prevReps = exercise.previous_sets[sets - 1].reps;
-    }
+    const nextSetNumber = exercise.sets.length + 1;
+    const prevSet = exercise.previous_sets?.find(
+      (p) => p.set_number === nextSetNumber,
+    );
 
     const newSet = {
-      set_number: sets,
-      weight: prevWeight,
-      reps: prevReps,
-      previous: prevWeight !== "" ? `${Number(prevWeight)} x ${prevReps}` : "-",
+      set_number: nextSetNumber,
+      weight: prevSet ? prevSet.weight : "",
+      reps: prevSet ? prevSet.reps : "",
       completed: false,
     };
 
@@ -219,20 +213,28 @@ export default function WorkoutPage() {
     }));
   };
 
-  const handleOpenExercise = (exercise) => {
+  const handleOpenExercise = async (exercise) => {
+    let previousSets = [];
+    try {
+      previousSets = await getPreviousSets(exercise.id);
+    } catch (err) {
+      console.error(err.message || "Error al cargar las series anteriores");
+    }
+
+    const firstPrev = previousSets.find((p) => p.set_number === 1);
+
     const exerciseToAdd = {
       id: exercise.id,
       name: exercise.name,
       muscle_group: exercise.muscle_group,
       target_sets: 1,
       target_reps: "8-12",
-      previous_sets: [], //TODO: Crear endpoint en el backend para obtener previous_sets
+      previous_sets: previousSets,
       sets: [
         {
           set_number: 1,
-          weight: "",
-          reps: "",
-          previous: "-",
+          weight: firstPrev ? firstPrev.weight : "",
+          reps: firstPrev ? firstPrev.reps : "",
           completed: false,
         },
       ],
@@ -346,63 +348,73 @@ export default function WorkoutPage() {
                   <span>✓</span>
                 </div>
 
-                {exercise.sets.map((set) => (
-                  <div className="exercise-details" key={set.set_number}>
-                    <div className="serie-number">
-                      <p>{set.set_number}</p>
-                    </div>
+                {exercise.sets.map((set) => {
+                  const prev = exercise.previous_sets?.find(
+                    (p) => p.set_number === set.set_number,
+                  );
 
-                    <div className="past-set">
-                      <p>{set.previous}</p>
-                    </div>
+                  const previousText = prev
+                    ? `${Number(prev.weight)} x ${prev.reps}`
+                    : "-";
 
-                    <div className="set-kg">
+                  return (
+                    <div className="exercise-details" key={set.set_number}>
+                      <div className="serie-number">
+                        <p>{set.set_number}</p>
+                      </div>
+
+                      <div className="past-set">
+                        <p>{previousText}</p>
+                      </div>
+
+                      <div className="set-kg">
+                        <input
+                          type="number"
+                          step="any"
+                          placeholder="0"
+                          value={set.weight !== "" ? Number(set.weight) : ""}
+                          onChange={(e) =>
+                            handleSetChange(
+                              exercise.id,
+                              set.set_number,
+                              "weight",
+                              e.target.value,
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="set-reps">
+                        <input
+                          type="number"
+                          placeholder="0"
+                          value={set.reps}
+                          onChange={(e) =>
+                            handleSetChange(
+                              exercise.id,
+                              set.set_number,
+                              "reps",
+                              e.target.value,
+                            )
+                          }
+                        />
+                      </div>
+
                       <input
-                        type="number"
-                        step="any"
-                        placeholder="0"
-                        value={set.weight !== "" ? Number(set.weight) : ""}
+                        type="checkbox"
+                        checked={set.completed}
                         onChange={(e) =>
                           handleSetChange(
                             exercise.id,
                             set.set_number,
-                            "weight",
-                            e.target.value,
+                            "completed",
+                            e.target.checked,
                           )
                         }
                       />
                     </div>
-
-                    <div className="set-reps">
-                      <input
-                        type="number"
-                        placeholder="0"
-                        value={set.reps}
-                        onChange={(e) =>
-                          handleSetChange(
-                            exercise.id,
-                            set.set_number,
-                            "reps",
-                            e.target.value,
-                          )
-                        }
-                      />
-                    </div>
-
-                    <input
-                      type="checkbox"
-                      checked={set.completed}
-                      onChange={(e) =>
-                        handleSetChange(
-                          exercise.id,
-                          set.set_number,
-                          "completed",
-                          e.target.checked,
-                        )
-                      }
-                    />
-                  </div>
-                ))}
+                  );
+                })}
 
                 <button type="button" onClick={() => handleAddSet(exercise.id)}>
                   + Agregar serie
