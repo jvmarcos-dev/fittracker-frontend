@@ -1,9 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/history.css";
 import historyMock from "../mocks/history.json";
+import { getHistory } from "../services/routineService";
 export default function HistoryPage() {
-  const [history, setHistory] = useState(historyMock);
+  const [history, setHistory] = useState([]);
   const [expandedLogIds, setExpandedLogIds] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    const historyFetch = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const historyData = await getHistory();
+        setHistory(historyData);
+      } catch (err) {
+        setError(
+          err.message || "Se ha producido un error al cargar el historial",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    historyFetch();
+  }, []);
 
   const formatDate = (isoString) => {
     if (!isoString) return "";
