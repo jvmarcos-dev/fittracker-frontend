@@ -1,16 +1,38 @@
-# React + Vite
+# FitTracker Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Single-page application (SPA) built with React and Vite for strength workout tracking and routine management (v1.0.0 MVP).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## About This Project & Development Notes
 
-## React Compiler
+- **Context & Objective:** Built as an intensive summer learning project to understand full-stack architecture using React and Laravel.
+- **AI-Assisted Learning:** Developed utilizing AI tools as a pair-programming partner to explore unfamiliar patterns, reason through data modeling, and debug state synchronization.
+- **UI & Styling Focus:** The primary goal was mastering core application logic and backend integration rather than manual styling. The visual layer relies on [Water.css](https://watercss.kognise.dev/) complemented by AI-assisted CSS adjustments for layout structure.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **Framework & Tooling:** React, Vite
+- **Routing:** React Router (with `<ProtectedRoute>` route guarding)
+- **State Management:** React Context API (`AuthContext` with persistent session token)
+- **HTTP Client:** Custom `fetch` wrapper (`apiClient`) with Bearer token injection
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Setup & Run
+
+1. `npm install`
+2. `npm run dev`
+
+---
+
+## Application Routes
+
+| Path                    | View                | Description                                         | Protected |
+| ----------------------- | ------------------- | --------------------------------------------------- | --------- |
+| `/login`                | `LoginPage`         | User login and registration forms                   | No        |
+| `/dashboard`            | `DashboardPage`     | User routine templates list                         | Yes       |
+| `/routines/new`         | `RoutineCreatePage` | Routine template builder with exercise selection    | Yes       |
+| `/routines/:id`         | `RoutineDetailPage` | Routine viewer and in-place editor                  | Yes       |
+| `/routines/:id/workout` | `WorkoutPage`       | Live session logger with timer and past set prefill | Yes       |
+| `/history`              | `HistoryPage`       | Chronological log of past completed sessions        | Yes       |
