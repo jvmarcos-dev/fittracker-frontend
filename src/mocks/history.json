@@ -1,0 +1,75 @@
+[
+  {
+    "id": 101,
+    "name": "Torso Hipertrofia",
+    "performed_at": "2026-09-05T18:30:00.000Z",
+    "duration_seconds": 3120,
+    "exercises": [
+      {
+        "id": 1,
+        "name": "Press de Banca Plano",
+        "muscle_group": "Pecho",
+        "sets": [
+          { "set_number": 1, "weight": 80.0, "reps": 10 },
+          { "set_number": 2, "weight": 85.0, "reps": 8 },
+          { "set_number": 3, "weight": 87.5, "reps": 6 }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Remo con Barra en Pronación",
+        "muscle_group": "Espalda",
+        "sets": [
+          { "set_number": 1, "weight": 70.0, "reps": 10 },
+          { "set_number": 2, "weight": 70.0, "reps": 10 },
+          { "set_number": 3, "weight": 75.0, "reps": 8 }
+        ]
+      },
+      {
+        "id": 8,
+        "name": "Press Militar con Mancuernas",
+        "muscle_group": "Hombro",
+        "sets": [
+          { "set_number": 1, "weight": 24.0, "reps": 12 },
+          { "set_number": 2, "weight": 26.0, "reps": 10 }
+        ]
+      },
+      {
+        "id": 12,
+        "name": "Elevaciones Laterales",
+        "muscle_group": "Hombro",
+        "sets": [
+          { "set_number": 1, "weight": 12.0, "reps": 15 },
+          { "set_number": 2, "weight": 12.0, "reps": 15 }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 100,
+    "name": "Pierna Fuerza",
+    "performed_at": "2026-09-03T17:15:00.000Z",
+    "duration_seconds": 3900,
+    "exercises": [
+      {
+        "id": 2,
+        "name": "Sentadilla Trasera",
+        "muscle_group": "Pierna",
+        "sets": [
+          { "set_number": 1, "weight": 100.0, "reps": 8 },
+          { "set_number": 2, "weight": 110.0, "reps": 6 },
+          { "set_number": 3, "weight": 120.0, "reps": 4 }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Prensa Inclinada",
+        "muscle_group": "Pierna",
+        "sets": [
+          { "set_number": 1, "weight": 160.0, "reps": 12 },
+          { "set_number": 2, "weight": 180.0, "reps": 10 }
+        ]
+      }
+    ]
+  }
+]

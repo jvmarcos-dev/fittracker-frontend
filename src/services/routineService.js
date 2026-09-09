@@ -30,3 +30,5 @@ export const finishRoutine = (routine, data) => apiFetch(`/routines/${routine}/f
 })
 
 export const getPreviousSets = (exercise) => apiFetch(`/exercises/${exercise}/previous`)
+
+export const getHistory = () => apiFetch('/history')

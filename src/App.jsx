@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { AuthContext } from "./context/authContext";
 import RoutineCreatePage from "./pages/RoutineCreatePage";
 import WorkoutPage from "./pages/WorkoutPage";
+import HistoryPage from "./pages/HistoryPage";
 
 function App() {
   const { logout, isAuthenticated } = useContext(AuthContext);
@@ -42,6 +43,17 @@ function App() {
               gap: "20px",
             }}
           >
+            <Link
+              to="/history"
+              className="btn-primary"
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                backgroundColor: "#0a5db1",
+              }}
+            >
+              Ver historial
+            </Link>
             <Link
               to="/routines/new"
               className="btn-primary"
@@ -82,6 +94,7 @@ function App() {
           element={<RoutineCreatePage></RoutineCreatePage>}
         ></Route>
         <Route path="/routines/:id/workout" element={<WorkoutPage />} />
+        <Route path="/history" element={<HistoryPage></HistoryPage>}></Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
