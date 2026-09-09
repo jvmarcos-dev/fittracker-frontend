@@ -72,6 +72,14 @@ export default function HistoryPage() {
     );
   };
 
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
   return (
     <>
       {history.length === 0 ? (
