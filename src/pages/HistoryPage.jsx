@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "../styles/history.css";
-import historyMock from "../mocks/history.json";
 import { getHistory } from "../services/routineService";
 export default function HistoryPage() {
   const [history, setHistory] = useState([]);

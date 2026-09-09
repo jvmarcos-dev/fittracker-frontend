@@ -45,12 +45,7 @@ export default function RoutineCreatePage() {
   );
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
-
-    //en caso contrario, recupero los ejercicios y los guardo
+    //recupero los ejercicios y los guardo
     getExercises().then((exercises) => setExercises(exercises));
   }, [isAuthenticated, navigate]);
 
