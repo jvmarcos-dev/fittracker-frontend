@@ -19,7 +19,7 @@ import PlayIcon from "../components/icons/PlayIcon";
 export default function RoutineDetailPage() {
   const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [routine, setRoutine] = useState([]);
+  const [routine, setRoutine] = useState(null);
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [exercises, setExercises] = useState([]);
@@ -38,12 +38,7 @@ export default function RoutineDetailPage() {
   } = useExerciseSelection();
   ///si no está autenticado, lo enviamos al login
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
-
-    //en caso contrario, recupero las rutinas y las guardo
+    //recupero las rutinas y las guardo
     getRoutineNumber(id).then((routine) => setRoutine(routine));
   }, [isAuthenticated, navigate, id]);
 
@@ -119,6 +114,8 @@ export default function RoutineDetailPage() {
   const handleDeleteExercise = (exerciseId) => {
     setDraftExercises((prev) => prev.filter((item) => item.id !== exerciseId));
   };
+
+  if (!routine) return <p>Cargando...</p>;
 
   return (
     <div className="routine-detail-container">

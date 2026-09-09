@@ -88,13 +88,38 @@ function App() {
         ></Route>
 
         {/*Ruta para la vista de detalle de cada rutina*/}
-        <Route path="/routines/:id" element={<RoutineDetailPage />} />
+        <Route
+          path="/routines/:id"
+          element={
+            <ProtectedRoute>
+              <RoutineDetailPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/routines/new"
-          element={<RoutineCreatePage></RoutineCreatePage>}
+          element={
+            <ProtectedRoute>
+              <RoutineCreatePage></RoutineCreatePage>
+            </ProtectedRoute>
+          }
         ></Route>
-        <Route path="/routines/:id/workout" element={<WorkoutPage />} />
-        <Route path="/history" element={<HistoryPage></HistoryPage>}></Route>
+        <Route
+          path="/routines/:id/workout"
+          element={
+            <ProtectedRoute>
+              <WorkoutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute>
+              <HistoryPage></HistoryPage>
+            </ProtectedRoute>
+          }
+        ></Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>

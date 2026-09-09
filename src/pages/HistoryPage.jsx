@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "../styles/history.css";
-import historyMock from "../mocks/history.json";
 import { getHistory } from "../services/routineService";
 export default function HistoryPage() {
   const [history, setHistory] = useState([]);
@@ -71,6 +70,14 @@ export default function HistoryPage() {
           [...prevIds, id],
     );
   };
+
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <>

@@ -9,14 +9,7 @@ export default function DashboardPage() {
   const [routines, setRoutines] = useState([]);
   const navigate = useNavigate();
 
-  //si no está autenticado, lo enviamos al login
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
-
-    //en caso contrario, recupero las rutinas y las guardo
     getRoutines().then((routines) => setRoutines(routines));
   }, [isAuthenticated, navigate]);
 
