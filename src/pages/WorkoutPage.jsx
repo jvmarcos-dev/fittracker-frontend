@@ -194,7 +194,7 @@ export default function WorkoutPage() {
       const data = await finishRoutine(id, finishedPayload);
 
       //si ha ido todo bien vuelve a la pantalla de rutinas
-      navigate("/routines");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Error al guardar el entrenamiento");
     } finally {
